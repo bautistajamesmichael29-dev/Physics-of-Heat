@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><title>Midterm Reviewer: Heat and Temperature</title>
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #f7f9fc;
+    --border: #dde3ed;
+    --text: #1a2332;
+    --muted: #5a6a7e;
+    --hint: #8a9ab0;
+    --green: #0e7c3f;
+    --green-light: #d1fae5;
+    --red: #be123c;
+    --red-light: #ffe4e6;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 0 0 60px;
+  }
+  .header {
+    background: linear-gradient(135deg, #5b0f6b 0%, #9a1750 45%, #c05c00 100%);
+    color: white;
+    padding: 40px 32px 32px;
+    text-align: center;
+  }
+  .header h1 { font-size: 27px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .header p { font-size: 14px; opacity: 0.85; }
+  .header .badge-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 18px; }
+  .badge { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 11.5px; padding: 4px 12px; border-radius: 20px; }
+
+  .scorebar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    position: sticky; top: 0; z-index: 99; flex-wrap: wrap;
+  }
+  .score-item { text-align: center; }
+  .score-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--hint); }
+  .score-val { font-size: 22px; font-weight: 700; }
+  .score-val.green { color: var(--green); }
+  .score-val.red { color: var(--red); }
+  .score-val.blue { color: #028090; }
+
+  .toc {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 32px;
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  }
+  .toc a {
+    font-size: 13px; font-weight: 600; text-decoration: none;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1.5px solid var(--border); color: var(--muted); transition: all 0.15s;
+  }
+  .toc a:hover { background: var(--bg); color: var(--text); }
+  .t1 .topic-header { border-left: 5px solid #1a6fc4; }
+  .toc a.t1 { border-color: #1a6fc4; color: #1a6fc4; }
+  .t2 .topic-header { border-left: 5px solid #0b6e4f; }
+  .toc a.t2 { border-color: #0b6e4f; color: #0b6e4f; }
+  .t3 .topic-header { border-left: 5px solid #c05c00; }
+  .toc a.t3 { border-color: #c05c00; color: #c05c00; }
+  .t4 .topic-header { border-left: 5px solid #6d28d9; }
+  .toc a.t4 { border-color: #6d28d9; color: #6d28d9; }
+  .t5 .topic-header { border-left: 5px solid #be123c; }
+  .toc a.t5 { border-color: #be123c; color: #be123c; }
+  .t6 .topic-header { border-left: 5px solid #0e5f6b; }
+  .toc a.t6 { border-color: #0e5f6b; color: #0e5f6b; }
+  .t7 .topic-header { border-left: 5px solid #9a1750; }
+  .toc a.t7 { border-color: #9a1750; color: #9a1750; }
+  .t8 .topic-header { border-left: 5px solid #1b4332; }
+  .toc a.t8 { border-color: #1b4332; color: #1b4332; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 20px; }
+
+  .topic-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 40px; overflow: hidden; }
+  .topic-header { padding: 22px 28px 18px; border-bottom: 1px solid var(--border); }
+  .topic-header .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .topic-header h2 { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; }
+  .topic-header .desc { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  .topic-body { padding: 24px 28px; }
+
+  .qrow { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 14px; }
+  .qrow:last-child { margin-bottom: 0; }
+  .q-num { font-size: 11px; font-weight: 700; color: var(--hint); margin-bottom: 3px; }
+  .q-text { font-size: 14px; font-weight: 600; margin-bottom: 12px; line-height: 1.5; }
+  .q-opts { display: flex; flex-direction: column; gap: 6px; }
+  .opt { font-size: 13px; padding: 9px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--muted); cursor: pointer; transition: all 0.12s; text-align: left; }
+  .opt:hover:not(:disabled) { background: var(--bg); border-color: #aab; color: var(--text); }
+  .opt.correct { background: var(--green-light); border-color: var(--green); color: #0a3d20; font-weight: 600; }
+  .opt.wrong { background: var(--red-light); border-color: var(--red); color: #7f0020; text-decoration: line-through; }
+  .opt.reveal-correct { background: var(--green-light); border-color: var(--green); color: #0a3d20; }
+  .opt:disabled { cursor: default; }
+  .q-explain { font-size: 13px; color: #0a3d20; background: var(--green-light); border-radius: var(--radius-sm); padding: 10px 13px; margin-top: 10px; line-height: 1.55; display: none; }
+
+  .day-score { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-left: 10px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); vertical-align: middle; }
+  .reset-btn { font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; float: right; font-weight: 600; transition: all 0.12s; }
+  .reset-btn:hover { background: var(--bg); color: var(--text); }
+
+  @media (max-width: 600px) {
+    .topic-body { padding: 18px 16px; }
+    .topic-header { padding: 16px; }
+    .scorebar { gap: 16px; }
+    .score-val { font-size: 18px; }
+  }
+</style>
+</head><body>
+<div class="header"><h1>🌡️ Physics of Heat Midterm Reviewer</h1><p>Temperature · Heat · Heat Capacity · Thermal Properties of Matter</p><div class="badge-row"><span class="badge">Chapter 1 — Temperature</span><span class="badge">Chapter 2 — Heat</span><span class="badge">Chapter 3 — Heat Capacity</span><span class="badge">Chapter 4 — Thermal Properties of Matter</span></div></div>
+<div class="scorebar"><div class="score-item"><div class="score-label">Answered</div><div class="score-val blue" id="sc-answered">0 / 50</div></div><div class="score-item"><div class="score-label">Correct</div><div class="score-val green" id="sc-correct">0</div></div><div class="score-item"><div class="score-label">Wrong</div><div class="score-val red" id="sc-wrong">0</div></div><div class="score-item"><div class="score-label">Score</div><div class="score-val blue" id="sc-pct">—</div></div></div>
+<nav class="toc"><a href="#part1" class="t1">🌡️ Temperature</a><a href="#part2" class="t2">🔥 Heat</a><a href="#part3" class="t3">⚗️ Heat Capacity</a><a href="#part4" class="t4">🎈 Thermal Properties of Matter</a></nav>
+<div class="container">
+<div class="topic-block t1" id="part1"><div class="topic-header"><button class="reset-btn" onclick="resetDay('part1')">Reset</button><div class="eyebrow" style="color:#c0392b">Chapter 1</div><h2>Chapter 1 — Temperature <span class="day-score" id="ds-part1">0 / 13</span></h2><div class="desc">Temperature, thermal equilibrium, thermometers, and temperature scales</div></div><div class="topic-body">
+<div class="qrow" data-day="part1"><div class="q-num">Q1</div><div class="q-text">Temperature is best described as a measure of the:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Total mass of an object</button><button class="opt" onclick="answer(this, true)">Average kinetic energy of the particles in a sample</button><button class="opt" onclick="answer(this, false)">Volume of a substance</button><button class="opt" onclick="answer(this, false)">Number of atoms in an object</button></div><div class="q-explain">✅ Temperature reflects how fast the molecules are vibrating. Heat flows from higher to lower temperature.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q2</div><div class="q-text">Heat always flows from:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">A low-temperature body to a high-temperature body</button><button class="opt" onclick="answer(this, false)">A body of larger mass to a smaller one</button><button class="opt" onclick="answer(this, true)">A high-temperature body to a low-temperature body</button><button class="opt" onclick="answer(this, false)">Cold to hot until equilibrium is lost</button></div><div class="q-explain">✅ When there is no more temperature difference, there is no more heat transfer.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q3</div><div class="q-text">The normal oral body temperature is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">35 °C (95 °F)</button><button class="opt" onclick="answer(this, true)">37 °C (98.6 °F)</button><button class="opt" onclick="answer(this, false)">37.8 °C (100 °F)</button><button class="opt" onclick="answer(this, false)">39 °C (102.2 °F)</button></div><div class="q-explain">✅ Rectal is about 37.3 °C (99.2 °F), and rectal is the most accurate of oral, axillary, and rectal.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q4</div><div class="q-text">Body temperature is regulated by thermoregulatory centers in the:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Pituitary gland</button><button class="opt" onclick="answer(this, false)">Cerebellum</button><button class="opt" onclick="answer(this, true)">Hypothalamus</button><button class="opt" onclick="answer(this, false)">Thyroid</button></div><div class="q-explain">✅ The hypothalamus balances heat production and heat loss. About 85% of heat loss is through the skin.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q5</div><div class="q-text">Hypothermia exists when core temperature falls below:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">35 °C</button><button class="opt" onclick="answer(this, false)">37 °C</button><button class="opt" onclick="answer(this, false)">30 °C</button><button class="opt" onclick="answer(this, false)">32 °F</button></div><div class="q-explain">✅ Fever (pyrexia) is a temperature above normal. Infants are at risk because of poor thermoregulation and high surface-area-to-weight ratio.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q6</div><div class="q-text">Which temperature measurement is generally the most accurate?</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Axillary</button><button class="opt" onclick="answer(this, false)">Forehead</button><button class="opt" onclick="answer(this, true)">Rectal</button><button class="opt" onclick="answer(this, false)">Oral with mouth open</button></div><div class="q-explain">✅ Rectal averages about 1 °F higher than oral and 1.5 °F higher than axillary.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q7</div><div class="q-text">Two bodies in contact at the same temperature are in:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">Thermal equilibrium</button><button class="opt" onclick="answer(this, false)">Thermal expansion</button><button class="opt" onclick="answer(this, false)">Phase change</button><button class="opt" onclick="answer(this, false)">Convection</button></div><div class="q-explain">✅ There is no net exchange of heat. This follows the Zeroth Law of Thermodynamics and is the basis of thermometer readings.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q8</div><div class="q-text">Mercury equipment, including mercury-in-glass thermometers, was phased out of Philippine hospitals starting:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">January 1, 2000</button><button class="opt" onclick="answer(this, true)">September 28, 2010</button><button class="opt" onclick="answer(this, false)">June 12, 2015</button><button class="opt" onclick="answer(this, false)">December 25, 2005</button></div><div class="q-explain">✅ Mercury content is dangerous to people.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q9</div><div class="q-text">A non-contact (infrared/laser) thermometer measures temperature using:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Expansion of mercury</button><button class="opt" onclick="answer(this, true)">Thermal radiation emitted by the body</button><button class="opt" onclick="answer(this, false)">Color change of liquid crystals</button><button class="opt" onclick="answer(this, false)">Resistance of platinum</button></div><div class="q-explain">✅ Liquid crystal thermometers change color; resistance thermometers use platinum wire.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q10</div><div class="q-text">A rotary thermometer works because the two joined metals in its coiled bimetallic strip:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Melt at different temperatures</button><button class="opt" onclick="answer(this, true)">Expand at different rates when heated</button><button class="opt" onclick="answer(this, false)">Conduct no heat</button><button class="opt" onclick="answer(this, false)">Change color</button></div><div class="q-explain">✅ The strip bends, moving the pointer along the scale.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q11</div><div class="q-text">Absolute zero is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">0 °C</button><button class="opt" onclick="answer(this, true)">-273 °C (0 K)</button><button class="opt" onclick="answer(this, false)">0 °F</button><button class="opt" onclick="answer(this, false)">-100 °C</button></div><div class="q-explain">✅ It is the temperature at which matter is said to have lost all its thermal energy.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q12</div><div class="q-text">On the Fahrenheit scale, water freezes and boils at:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">0 °F and 100 °F</button><button class="opt" onclick="answer(this, false)">32 °F and 180 °F</button><button class="opt" onclick="answer(this, true)">32 °F and 212 °F</button><button class="opt" onclick="answer(this, false)">273 °F and 373 °F</button></div><div class="q-explain">✅ There are 180 divisions between the fixed points. Celsius is 0 and 100, and Kelvin is 273 and 373.</div></div>
+<div class="qrow" data-day="part1"><div class="q-num">Q13</div><div class="q-text">Convert 27 °C to Kelvin using K = °C + 273:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">246 K</button><button class="opt" onclick="answer(this, true)">300 K</button><button class="opt" onclick="answer(this, false)">27 K</button><button class="opt" onclick="answer(this, false)">546 K</button></div><div class="q-explain">✅ 27 + 273 = 300 K.</div></div>
+</div></div>
+<div class="topic-block t2" id="part2"><div class="topic-header"><button class="reset-btn" onclick="resetDay('part2')">Reset</button><div class="eyebrow" style="color:#d35400">Chapter 2</div><h2>Chapter 2 — Heat <span class="day-score" id="ds-part2">0 / 12</span></h2><div class="desc">Sources of heat, thermal expansion, and change of phase</div></div><div class="topic-body">
+<div class="qrow" data-day="part2"><div class="q-num">Q1</div><div class="q-text">Heat is best defined as:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">Energy transfer due to a temperature difference between two bodies</button><button class="opt" onclick="answer(this, false)">The temperature of an object</button><button class="opt" onclick="answer(this, false)">A weightless invisible fluid</button><button class="opt" onclick="answer(this, false)">The mass of an object</button></div><div class="q-explain">✅ The caloric fluid theory was disproved by Count Rumford when boring a cannon barrel.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q2</div><div class="q-text">Rubbing your hands together to warm them is an example of heat from:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Chemical reaction</button><button class="opt" onclick="answer(this, false)">Nuclear energy</button><button class="opt" onclick="answer(this, true)">Mechanical energy</button><button class="opt" onclick="answer(this, false)">Electrical energy</button></div><div class="q-explain">✅ Other sources: bending metal and collision are also mechanical in nature.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q3</div><div class="q-text">Heat used to turn water into steam to run a turbine comes from which artificial source?</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">Nuclear energy</button><button class="opt" onclick="answer(this, false)">Bending metal</button><button class="opt" onclick="answer(this, false)">The sun</button><button class="opt" onclick="answer(this, false)">Interior of the earth</button></div><div class="q-explain">✅ The sun and the interior of the earth are the natural sources.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q4</div><div class="q-text">A 1-m aluminum rod (α = 24 × 10⁻⁶/°C) is heated from 30 °C to 50 °C. Its change in length ΔL = αL₀ΔT is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">0.048 m</button><button class="opt" onclick="answer(this, true)">4.8 × 10⁻⁴ m</button><button class="opt" onclick="answer(this, false)">2.4 × 10⁻⁶ m</button><button class="opt" onclick="answer(this, false)">1.00048 m</button></div><div class="q-explain">✅ ΔL = (24 × 10⁻⁶)(1)(20) = 0.00048 m, so the final length is 1.00048 m.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q5</div><div class="q-text">A 200-m steel bridge (α = 12 × 10⁻⁶/°C) at 20 °C goes to -30 °C. The change in length is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">+0.12 m</button><button class="opt" onclick="answer(this, true)">-0.12 m</button><button class="opt" onclick="answer(this, false)">-0.048 m</button><button class="opt" onclick="answer(this, false)">-1.2 m</button></div><div class="q-explain">✅ ΔL = (12 × 10⁻⁶)(200)(-50) = -0.12 m (contraction). At +40 °C it expands 0.048 m.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q6</div><div class="q-text">The formula for volume expansion of liquids is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">ΔV = αL₀ΔT</button><button class="opt" onclick="answer(this, true)">ΔV = βV₀ΔT</button><button class="opt" onclick="answer(this, false)">H = mcΔT</button><button class="opt" onclick="answer(this, false)">pV = nRT</button></div><div class="q-explain">✅ A 72 L tank of gasoline (β = 950 × 10⁻⁶/°C) warmed from 18 °C to 32 °C overflows about 0.96 L.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q7</div><div class="q-text">Gas volume is directly proportional to absolute temperature at constant pressure. This is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Boyle’s Law</button><button class="opt" onclick="answer(this, false)">Dalton’s Law</button><button class="opt" onclick="answer(this, true)">Charles’s Law</button><button class="opt" onclick="answer(this, false)">Gay-Lussac’s Law</button></div><div class="q-explain">✅ Temperatures must be in Kelvin.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q8</div><div class="q-text">250 mL of oxygen at 27 °C is warmed to 35 °C at constant pressure. The new volume is:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">256.7 mL</button><button class="opt" onclick="answer(this, false)">250 mL</button><button class="opt" onclick="answer(this, false)">77,000 mL</button><button class="opt" onclick="answer(this, false)">243.5 mL</button></div><div class="q-explain">✅ V = 250 × 308 / 300 = 256.7 mL.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q9</div><div class="q-text">Vaporization that takes place at the surface of a liquid is called:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Boiling</button><button class="opt" onclick="answer(this, true)">Evaporation</button><button class="opt" onclick="answer(this, false)">Condensation</button><button class="opt" onclick="answer(this, false)">Fusion</button></div><div class="q-explain">✅ Boiling is vaporization below the surface, forming bubbles.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q10</div><div class="q-text">The change of state from gas to liquid is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Fusion</button><button class="opt" onclick="answer(this, false)">Melting</button><button class="opt" onclick="answer(this, false)">Freezing</button><button class="opt" onclick="answer(this, true)">Condensation</button></div><div class="q-explain">✅ Freezing is liquid to solid, and fusion (melting) is solid to liquid.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q11</div><div class="q-text">A liquid has:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Definite shape but no definite volume</button><button class="opt" onclick="answer(this, true)">Definite volume but no definite shape</button><button class="opt" onclick="answer(this, false)">Both definite shape and volume</button><button class="opt" onclick="answer(this, false)">Neither definite shape nor volume</button></div><div class="q-explain">✅ It takes the shape of its container. Solids have both, and gases have neither.</div></div>
+<div class="qrow" data-day="part2"><div class="q-num">Q12</div><div class="q-text">Generally, when an object’s temperature increases, its molecules move more rapidly and the object:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Contracts</button><button class="opt" onclick="answer(this, true)">Expands</button><button class="opt" onclick="answer(this, false)">Freezes</button><button class="opt" onclick="answer(this, false)">Loses mass</button></div><div class="q-explain">✅ Thermal expansion. Most substances expand when heated and contract when cooled.</div></div>
+</div></div>
+<div class="topic-block t3" id="part3"><div class="topic-header"><button class="reset-btn" onclick="resetDay('part3')">Reset</button><div class="eyebrow" style="color:#1e8449">Chapter 3</div><h2>Chapter 3 — Heat Capacity <span class="day-score" id="ds-part3">0 / 13</span></h2><div class="desc">Heat capacity, specific heat, mixtures, latent heat, and heat transfer</div></div><div class="topic-body">
+<div class="qrow" data-day="part3"><div class="q-num">Q1</div><div class="q-text">Heat capacity is the quantity of heat necessary to:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Melt a substance</button><button class="opt" onclick="answer(this, true)">Raise an object’s temperature by 1 °C</button><button class="opt" onclick="answer(this, false)">Vaporize 1 gram of liquid</button><button class="opt" onclick="answer(this, false)">Raise 1 g of any substance 1 °C</button></div><div class="q-explain">✅ Specific heat is for 1 gram of a substance.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q2</div><div class="q-text">One calorie is equal to:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">4.184 J</button><button class="opt" onclick="answer(this, false)">1,000 J</button><button class="opt" onclick="answer(this, false)">1 kJ</button><button class="opt" onclick="answer(this, false)">0.239 J</button></div><div class="q-explain">✅ 1 kcal = 1,000 cal. The joule is the SI unit for heat.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q3</div><div class="q-text">The specific heat of water is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">0.11 cal/g·°C</button><button class="opt" onclick="answer(this, true)">1.00 cal/g·°C</button><button class="opt" onclick="answer(this, false)">0.50 cal/g·°C</button><button class="opt" onclick="answer(this, false)">4.18 cal/g·°C</button></div><div class="q-explain">✅ It is 4.18 kJ/kg·K. Water is hard to heat up or cool down.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q4</div><div class="q-text">How much heat is needed to raise 200 g of iron (c = 0.11 cal/g·°C) from 27 °C to 80 °C?</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">1,166 cal</button><button class="opt" onclick="answer(this, false)">2,200 cal</button><button class="opt" onclick="answer(this, false)">440 cal</button><button class="opt" onclick="answer(this, false)">11.66 cal</button></div><div class="q-explain">✅ H = mcΔT = 200 × 0.11 × 53 = 1,166 cal.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q5</div><div class="q-text">Heat needed to raise 5 kg of water by 10 K (c = 4180 J/kg·K):</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">20,900 J</button><button class="opt" onclick="answer(this, false)">418 J</button><button class="opt" onclick="answer(this, true)">209,000 J</button><button class="opt" onclick="answer(this, false)">2,090 J</button></div><div class="q-explain">✅ H = 5 × 4180 × 10 = 209,000 J.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q6</div><div class="q-text">In the method of mixtures, assuming no heat loss:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">Heat given off equals heat absorbed</button><button class="opt" onclick="answer(this, false)">Temperature lost equals temperature gained</button><button class="opt" onclick="answer(this, false)">Mass lost equals mass gained</button><button class="opt" onclick="answer(this, false)">Heat is destroyed</button></div><div class="q-explain">✅ mcΔT (given off) = mcΔT (absorbed).</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q7</div><div class="q-text">100 g of iron (c = 0.11) cools from 100 °C to 60 °C. The heat it gives off is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">660 cal</button><button class="opt" onclick="answer(this, true)">440 cal</button><button class="opt" onclick="answer(this, false)">1,100 cal</button><button class="opt" onclick="answer(this, false)">220 cal</button></div><div class="q-explain">✅ H = 100 × 0.11 × 40 = 440 cal, equal to the heat absorbed by 22 g of water warming from 40 °C to 60 °C.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q8</div><div class="q-text">The heat of fusion of ice is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">540 cal/g</button><button class="opt" onclick="answer(this, false)">1 cal/g</button><button class="opt" onclick="answer(this, true)">80 cal/g</button><button class="opt" onclick="answer(this, false)">0.5 cal/g</button></div><div class="q-explain">✅ It is the heat needed to change 1 g of solid to liquid without a temperature change (335 kJ/kg).</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q9</div><div class="q-text">Heat needed to melt 25 g of ice at 0 °C into water at 0 °C:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">2,000 cal</button><button class="opt" onclick="answer(this, false)">13,500 cal</button><button class="opt" onclick="answer(this, false)">25 cal</button><button class="opt" onclick="answer(this, false)">200 cal</button></div><div class="q-explain">✅ H = mh_f = 25 × 80 = 2,000 cal (2.0 kcal).</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q10</div><div class="q-text">Latent heat is called “hidden” because:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">It is not real</button><button class="opt" onclick="answer(this, true)">It does not register on a thermometer during a phase change</button><button class="opt" onclick="answer(this, false)">It is stored in glass</button><button class="opt" onclick="answer(this, false)">It only occurs in metals</button></div><div class="q-explain">✅ Heat absorbed during a phase change does not change the temperature.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q11</div><div class="q-text">The heat of vaporization of water is about:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">80 cal/g</button><button class="opt" onclick="answer(this, false)">100 cal/g</button><button class="opt" onclick="answer(this, false)">1 cal/g</button><button class="opt" onclick="answer(this, true)">540 cal/g</button></div><div class="q-explain">✅ H_v = mh_v. For 10 g of water, that is 5,400 cal.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q12</div><div class="q-text">Metals are good conductors of heat because they contain:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Large molecules</button><button class="opt" onclick="answer(this, true)">Free electrons</button><button class="opt" onclick="answer(this, false)">Air pockets</button><button class="opt" onclick="answer(this, false)">Heavy atoms</button></div><div class="q-explain">✅ Conduction is transfer by direct contact. Wood, cork, and polystyrene are insulators.</div></div>
+<div class="qrow" data-day="part3"><div class="q-num">Q13</div><div class="q-text">Heat from the sun reaches the earth mainly by:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Conduction</button><button class="opt" onclick="answer(this, false)">Convection</button><button class="opt" onclick="answer(this, true)">Radiation</button><button class="opt" onclick="answer(this, false)">Evaporation</button></div><div class="q-explain">✅ Radiation travels as electromagnetic waves through empty space. Convection happens only in fluids.</div></div>
+</div></div>
+<div class="topic-block t4" id="part4"><div class="topic-header"><button class="reset-btn" onclick="resetDay('part4')">Reset</button><div class="eyebrow" style="color:#6d28d9">Chapter 4</div><h2>Chapter 4 — Thermal Properties of Matter <span class="day-score" id="ds-part4">0 / 12</span></h2><div class="desc">Equation of state, gas laws, and the kinetic-molecular model</div></div><div class="topic-body">
+<div class="qrow" data-day="part4"><div class="q-num">Q1</div><div class="q-text">An equation of state relates:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Mass, density, and color</button><button class="opt" onclick="answer(this, true)">Pressure, volume, temperature, and mass or moles</button><button class="opt" onclick="answer(this, false)">Heat and work only</button><button class="opt" onclick="answer(this, false)">Length and width</button></div><div class="q-explain">✅ Pressure, volume, temperature, and amount of substance are the state variables.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q2</div><div class="q-text">In pV = nRT, the value of R in SI units is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">0.08206 J/mol·K</button><button class="opt" onclick="answer(this, true)">8.315 J/mol·K</button><button class="opt" onclick="answer(this, false)">6.022 J/mol·K</button><button class="opt" onclick="answer(this, false)">273 J/mol·K</button></div><div class="q-explain">✅ R = 0.08206 L·atm/mol·K when using atm and liters.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q3</div><div class="q-text">One mole of ideal gas at STP (273.15 K, 1.013 × 10⁵ Pa) occupies about:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">0.0224 m³</button><button class="opt" onclick="answer(this, false)">1 m³</button><button class="opt" onclick="answer(this, false)">0.224 m³</button><button class="opt" onclick="answer(this, false)">22.4 m³</button></div><div class="q-explain">✅ V = nRT/p ≈ 22.4 L.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q4</div><div class="q-text">Boyle’s Law states that, at constant temperature and moles of gas:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Volume is directly proportional to pressure</button><button class="opt" onclick="answer(this, true)">Pressure and volume are inversely proportional</button><button class="opt" onclick="answer(this, false)">Pressure is directly proportional to temperature</button><button class="opt" onclick="answer(this, false)">Volume is directly proportional to temperature</button></div><div class="q-explain">✅ P₁V₁ = P₂V₂. The graph is hyperbolic.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q5</div><div class="q-text">Helium at 800 torr occupies 0.250 L. The pressure when volume becomes 500 mL is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">1,600 torr</button><button class="opt" onclick="answer(this, true)">400 torr</button><button class="opt" onclick="answer(this, false)">200 torr</button><button class="opt" onclick="answer(this, false)">800 torr</button></div><div class="q-explain">✅ P₂ = 800 × 250 / 500 = 400 torr.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q6</div><div class="q-text">Charles’s Law requires temperature to be expressed in:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">Celsius</button><button class="opt" onclick="answer(this, false)">Fahrenheit</button><button class="opt" onclick="answer(this, true)">Kelvin</button><button class="opt" onclick="answer(this, false)">Any scale</button></div><div class="q-explain">✅ V₁/T₁ = V₂/T₂. Convert °C to K by adding 273.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q7</div><div class="q-text">A gas in a fixed container is at 125 atm and 20 °C. Its pressure at 35 °C is:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">131.40 atm</button><button class="opt" onclick="answer(this, false)">125 atm</button><button class="opt" onclick="answer(this, false)">218.8 atm</button><button class="opt" onclick="answer(this, false)">71.4 atm</button></div><div class="q-explain">✅ Gay-Lussac’s Law: P₂ = 125 × 308 / 293 = 131.40 atm.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q8</div><div class="q-text">A mixture of N₂, CO₂, and O₂ has total pressure 150 kPa. If N₂ = 100 kPa and CO₂ = 24 kPa, the partial pressure of O₂ is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">124 kPa</button><button class="opt" onclick="answer(this, true)">26 kPa</button><button class="opt" onclick="answer(this, false)">250 kPa</button><button class="opt" onclick="answer(this, false)">76 kPa</button></div><div class="q-explain">✅ Dalton’s Law: P_total = P₁ + P₂ + … so 150 - 124 = 26 kPa.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q9</div><div class="q-text">Gases with partial pressures of 2.00, 3.00, and 4.00 atm are in one container. The total pressure is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">24 atm</button><button class="opt" onclick="answer(this, false)">3 atm</button><button class="opt" onclick="answer(this, true)">9 atm</button><button class="opt" onclick="answer(this, false)">1.5 atm</button></div><div class="q-explain">✅ 2 + 3 + 4 = 9 atm.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q10</div><div class="q-text">A 30.0 mL bubble at 4.5 atm and 15 °C rises to 1.0 atm and 20 °C. Its new volume (combined gas law) is about:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">6.7 mL</button><button class="opt" onclick="answer(this, true)">137.3 mL</button><button class="opt" onclick="answer(this, false)">30 mL</button><button class="opt" onclick="answer(this, false)">132.7 mL</button></div><div class="q-explain">✅ V₂ = (4.5 × 30 × 293) / (288 × 1) = 137.34 mL.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q11</div><div class="q-text">Avogadro’s number, the number of molecules in a mole, is:</div><div class="q-opts"><button class="opt" onclick="answer(this, false)">6.022 × 10⁻²³</button><button class="opt" onclick="answer(this, false)">3.0 × 10⁸</button><button class="opt" onclick="answer(this, true)">6.022 × 10²³</button><button class="opt" onclick="answer(this, false)">1.0 × 10²³</button></div><div class="q-explain">✅ M = N_A × m relates molar mass to the mass of one molecule.</div></div>
+<div class="qrow" data-day="part4"><div class="q-num">Q12</div><div class="q-text">In the kinetic-molecular model of an ideal gas, molecules collide with the container walls in:</div><div class="q-opts"><button class="opt" onclick="answer(this, true)">Perfectly elastic collisions</button><button class="opt" onclick="answer(this, false)">Perfectly inelastic collisions</button><button class="opt" onclick="answer(this, false)">Slow, sticky collisions</button><button class="opt" onclick="answer(this, false)">No collisions</button></div><div class="q-explain">✅ Molecules are point particles in constant motion and the walls are rigid.</div></div>
+</div></div>
+</div>
+<script>
+  let totalCorrect = 0;
+  let totalWrong = 0;
+  let totalAnswered = 0;
+  const TOTAL = 50;
+
+  const dayStats = {
+    part1: {c:0, w:0, t:13},
+    part2: {c:0, w:0, t:12},
+    part3: {c:0, w:0, t:13},
+    part4: {c:0, w:0, t:12}
+  };
+
+  function updateScorebar() {
+    document.getElementById('sc-answered').textContent = totalAnswered + ' / ' + TOTAL;
+    document.getElementById('sc-correct').textContent = totalCorrect;
+    document.getElementById('sc-wrong').textContent = totalWrong;
+    document.getElementById('sc-pct').textContent = totalAnswered === 0
+      ? '—' : Math.round((totalCorrect / totalAnswered) * 100) + '%';
+  }
+
+  function updateDayScore(day) {
+    const s = dayStats[day];
+    const el = document.getElementById('ds-' + day);
+    el.textContent = s.c + ' / ' + s.t;
+    const allDone = s.c + s.w === s.t;
+    el.style.background = allDone && s.w === 0 ? '#d1fae5' : (s.w > 0 ? '#ffe4e6' : '');
+    el.style.color = allDone && s.w === 0 ? '#0e7c3f' : (s.w > 0 ? '#be123c' : '');
+    el.style.borderColor = allDone && s.w === 0 ? '#0e7c3f' : (s.w > 0 ? '#be123c' : '');
+  }
+
+  function answer(btn, isCorrect) {
+    const qrow = btn.closest('.qrow');
+    if (qrow.dataset.answered) return;
+    qrow.dataset.answered = '1';
+
+    const day = qrow.dataset.day;
+    const opts = qrow.querySelectorAll('.opt');
+    opts.forEach(o => o.disabled = true);
+
+    totalAnswered++;
+    if (isCorrect) {
+      btn.classList.add('correct');
+      totalCorrect++;
+      dayStats[day].c++;
+    } else {
+      btn.classList.add('wrong');
+      totalWrong++;
+      dayStats[day].w++;
+      opts.forEach(o => {
+        if (o.getAttribute('onclick') && o.getAttribute('onclick').includes('true')) {
+          o.classList.add('reveal-correct');
+        }
+      });
+    }
+
+    const explain = qrow.querySelector('.q-explain');
+    if (explain) explain.style.display = 'block';
+
+    updateScorebar();
+    updateDayScore(day);
+  }
+
+  function resetDay(day) {
+    const block = document.getElementById(day);
+    block.querySelectorAll('.qrow').forEach(row => {
+      delete row.dataset.answered;
+      row.querySelectorAll('.opt').forEach(o => {
+        o.disabled = false;
+        o.classList.remove('correct', 'wrong', 'reveal-correct');
+      });
+      const ex = row.querySelector('.q-explain');
+      if (ex) ex.style.display = 'none';
+    });
+
+    const s = dayStats[day];
+    totalCorrect -= s.c;
+    totalWrong -= s.w;
+    totalAnswered -= (s.c + s.w);
+    s.c = 0; s.w = 0;
+
+    const el = document.getElementById('ds-' + day);
+    el.textContent = '0 / ' + s.t;
+    el.style.background = '';
+    el.style.color = '';
+    el.style.borderColor = '';
+
+    updateScorebar();
+  }
+</script>
+</body>
+</html>
